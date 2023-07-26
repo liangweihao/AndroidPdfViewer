@@ -620,14 +620,15 @@ public class PDFView extends RelativeLayout {
         float currentXOffset = this.currentXOffset;
         float currentYOffset = this.currentYOffset;
         canvas.translate(currentXOffset, currentYOffset);
-
+// TODO:LWH  2023/7/27 这里可以优化 如果真实图有了就不用绘制缩略图了 直接可以跳过
+//        先绘制缩略图
         // Draws thumbnails
         for (PagePart part : cacheManager.getThumbnails()) {
             drawPart(canvas, part);
 
         }
 
-//        获取被加载的切片 然后进行位置
+//      再绘制真实的图
         // Draws parts
         for (PagePart part : cacheManager.getPageParts()) {
             drawPart(canvas, part);
@@ -707,6 +708,7 @@ public class PDFView extends RelativeLayout {
         float width = toCurrentScale(pageRelativeBounds.width() * size.getWidth());
         float height = toCurrentScale(pageRelativeBounds.height() * size.getHeight());
 
+//        因为涉及到缩放的问题 这里还需要将原来的图 放大到目标
         // If we use float values for this rectangle, there will be
         // a possible gap between page parts, especially when
         // the zoom level is high.
@@ -722,7 +724,7 @@ public class PDFView extends RelativeLayout {
             canvas.translate(-localTranslationX, -localTranslationY);
             return;
         }
-
+//  绘制图片内容
         canvas.drawBitmap(renderedBitmap, srcRect, dstRect, paint);
 
         if (Constants.DEBUG_MODE) {
@@ -813,6 +815,7 @@ public class PDFView extends RelativeLayout {
         } else {
             cacheManager.cachePart(part);
         }
+//        记载完毕图片以后就出发一下绘制
         redraw();
     }
 

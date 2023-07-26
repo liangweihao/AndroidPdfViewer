@@ -299,6 +299,7 @@ class PagesLoader {
         if (renderWidth > 0 && renderHeight > 0) {
 //            然后将当前的页面进行 渲染处理
             if (!pdfView.cacheManager.upPartIfContained(page, pageRelativeBounds, cacheOrder)) {
+//               这里就是加载图片的地方
                 pdfView.renderingHandler.addRenderingTask(page, renderWidth, renderHeight,
                         pageRelativeBounds, false, cacheOrder, pdfView.isBestQuality(),
                         pdfView.isAnnotationRendering());
